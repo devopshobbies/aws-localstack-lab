@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+   localstack:
+     image: localstack/localstack-full:latest
+     container_name: localstack
+     ports:
+       - "127.0.0.1:4510-4559:4510-4559"  
+       - "127.0.0.1:4566:4566"            
+     networks:
+       - "local" 
+     environment:
+       - SERVICES=sns,sqs,dynamodb 
+       - AWS_DEFAULT_REGION=eu-central-1 # Add AWS to refgion
+       - DEBUG=${DEBUG-} # New env
+       - DOCKER_HOST=unix:///var/run/docker.sock   # New env
+     volumes:
+       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack" #edit for new release
+       - "/var/run/docker.sock:/var/run/docker.sock" # new 
+   dynamodb-admin:
+      image: aaronshaf/dynamodb-admin
+      ports:
+        - 8001:8001
+      links:
+        - localstack
+      environment:
+        - DYNAMO_ENDPOINT=http://localstack:4566
+        - AWS_REGION=eu-central-1 # New env
+        - AWS_ACCESS_KEY_ID=fake # New env
+        - AWS_SECRET_ACCESS_KEY=fake # New env
+      depends_on:
+        - localstack
+      networks:
+        - "local"
+volumes:
+  localstack-data:
+    name: localstack-data
+networks:
+  local:
+    driver: bridge
