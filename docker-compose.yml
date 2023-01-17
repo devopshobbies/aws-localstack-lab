@@ -9,13 +9,12 @@ services:
      networks:
        - "local" 
      environment:
-       - SERVICES=sns,sqs,dynamodb 
-       - AWS_DEFAULT_REGION=eu-central-1 # Add AWS to refgion
-       - DEBUG=${DEBUG-} # New env
-       - DOCKER_HOST=unix:///var/run/docker.sock   # New env
+       - AWS_DEFAULT_REGION=eu-central-1
+       - DEBUG=${DEBUG-} 
+       - DOCKER_HOST=unix:///var/run/docker.sock  
      volumes:
-       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack" #edit for new release
-       - "/var/run/docker.sock:/var/run/docker.sock" # new 
+       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack" 
+       - "/var/run/docker.sock:/var/run/docker.sock" 
    dynamodb-admin:
       image: aaronshaf/dynamodb-admin
       ports:
@@ -24,9 +23,9 @@ services:
         - localstack
       environment:
         - DYNAMO_ENDPOINT=http://localstack:4566
-        - AWS_REGION=eu-central-1 # New env
-        - AWS_ACCESS_KEY_ID=fake # New env
-        - AWS_SECRET_ACCESS_KEY=fake # New env
+        - AWS_REGION=eu-central-1 
+        - AWS_ACCESS_KEY_ID=devopshobbies
+        - AWS_SECRET_ACCESS_KEY=devopshobbies 
       depends_on:
         - localstack
       networks:
