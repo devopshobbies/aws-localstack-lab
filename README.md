@@ -10,6 +10,9 @@ _____
 ```
 docker-compose up -d
 ```
+Note : 
+  For Iran internet issue we can use [docker. ir ](docker.ir)and [iranrepo](iranrepo.ir) or other internal repository for pull this image because localstack is a huge size ~(2G)
+
 
 ## Download Terraform AWS provider
 
