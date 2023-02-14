@@ -19,7 +19,7 @@ Note :
 ```
 terraform init
 ```
-
+If you recieve errors regarding **TLS HANDSHAKE** error consider using [Shecan](https://shecan.ir/) to download AWS provider.
 ## See the deployment plan and accept it by typing yes
 
 ``` 
