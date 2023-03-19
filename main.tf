@@ -39,8 +39,8 @@ provider "aws" {
 
 ######### DynamoDB #########
 
-resource "aws_dynamodb_table" "  devopshobbies-dev-devops-consumer-events" {
-  name           = "  devopshobbies-dev-devops-consumer-events"
+resource "aws_dynamodb_table" "devopshobbies-dev-devops-consumer-events" {
+  name           = "devopshobbies-dev-devops-consumer-events"
   read_capacity  = "20"
   write_capacity = "20"
   hash_key       = "Id" 
@@ -54,13 +54,13 @@ resource "aws_dynamodb_table" "  devopshobbies-dev-devops-consumer-events" {
 ######### SNS Topic #########
 
 resource "aws_sns_topic" "sns_topic" {
-  name      =   "  devopshobbies-devops-producer-events"
+  name      =   "devopshobbies-devops-producer-events"
 }
 
 ######### SQS Queue #########
 
 resource "aws_sqs_queue" "queue" {
-  name      =   "  devopshobbies-devops-consumer-events"
+  name      =   "devopshobbies-devops-consumer-events"
 }
 
 ######### SNS Subscription #########
