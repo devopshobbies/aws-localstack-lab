@@ -54,13 +54,13 @@ resource "aws_dynamodb_table" "devopshobbies-dev-devops-consumer-events" {
 ######### SNS Topic #########
 
 resource "aws_sns_topic" "sns_topic" {
-  name      =   "  devopshobbies-devops-producer-events"
+  name      =   "devopshobbies-devops-producer-events"
 }
 
 ######### SQS Queue #########
 
 resource "aws_sqs_queue" "queue" {
-  name      =   "  devopshobbies-devops-consumer-events"
+  name      =   "devopshobbies-devops-consumer-events"
 }
 
 ######### SNS Subscription #########
@@ -72,3 +72,12 @@ resource "aws_sns_topic_subscription" "private_http_subscription" {
   endpoint_auto_confirms = true
 }
 
+// Test Resource 
+resource "aws_instance" "vm" {
+  ami = "ami-830c94e3"
+  instance_type  = "t2.micro"
+  count = 3
+  tags = {
+    Name = "Server-${count.index + 1}",
+  }
+}
