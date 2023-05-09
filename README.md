@@ -31,6 +31,18 @@ terraform plan
 ```
 terraform apply --auto-approve
 ```
+
+## AWS CLI pointing to endpoint 
+
+```
+aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket my-bucket --region eu-central-1
+```
+
+## Get List of EC2 instances
+
+```
+aws --endpoint-url=http://localhost:4566 ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId,InstanceType,PublicIpAddress,Tags[?Key==`Name`]| [0].Value]' --output table --region eu-central-1
+```
 --------
 ## Dashboards 
 
