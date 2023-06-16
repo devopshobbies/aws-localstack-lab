@@ -1,21 +1,20 @@
 version: "3.8"
 services:
-   localstack:
-     image: localstack/localstack-full:latest
-     container_name: localstack
-     ports:
-       - "127.0.0.1:4510-4559:4510-4559"  
-       - "127.0.0.1:4566:4566"            
-     networks:
-       - "local" 
-     environment:
-       - AWS_DEFAULT_REGION=eu-central-1
-       - DEBUG=${DEBUG-} 
-       - DOCKER_HOST=unix:///var/run/docker.sock  
-     volumes:
-       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack" 
-       - "/var/run/docker.sock:/var/run/docker.sock" 
-   dynamodb-admin:
+ localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      - SERVICES=sns,sqs,dynamodb
+      - AWS_DEFAULT_REGION=eu-central-1
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+ dynamodb-admin:
       image: aaronshaf/dynamodb-admin
       ports:
         - 8001:8001
@@ -23,13 +22,30 @@ services:
         - localstack
       environment:
         - DYNAMO_ENDPOINT=http://localstack:4566
-        - AWS_REGION=eu-central-1 
+        - AWS_REGION=eu-central-1
         - AWS_ACCESS_KEY_ID=devopshobbies
-        - AWS_SECRET_ACCESS_KEY=devopshobbies 
+        - AWS_SECRET_ACCESS_KEY=devopshobbies
       depends_on:
         - localstack
       networks:
         - "local"
+ producer:
+      image: ghcr.io/justdice/devopstest-producer:latest
+      networks:
+        - "local"
+      environment:
+        - CLOUD_AWS_DEFAULTS_ENDPOINT=http://localstack:4566
+      links:
+        - localstack
+ consumer:
+      image: ghcr.io/justdice/devopstest-consumer:latest
+      networks:
+        - "local"
+      environment:
+          - CLOUD_AWS_DEFAULTS_ENDPOINT=http://localstack:4566
+      links:
+        - localstack
+      restart: always
 volumes:
   localstack-data:
     name: localstack-data
