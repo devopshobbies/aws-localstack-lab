@@ -39,7 +39,7 @@ provider "aws" {
 
 ######### DynamoDB #########
 
-resource "aws_dynamodb_table" "  devopshobbies-dev-devops-consumer-events" {
+resource "aws_dynamodb_table" "devopshobbies-dev-devops-consumer-events" {
   name           = "  devopshobbies-dev-devops-consumer-events"
   read_capacity  = "20"
   write_capacity = "20"
